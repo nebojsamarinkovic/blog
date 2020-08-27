@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/posts', function () {
+$posts = Post::all();
+
+    return view('posts', compact('posts'));
 });
+
+Route::get('/posts/{id}', function($id) {
+    $post = Post::findOrFail($id);
+    
+    $title = $post->title;
+    $body = $post->body;
+    return view('post', compact('title', 'body'));
+})->name('singlePost');
